@@ -7,6 +7,7 @@ TorchScript
    :hidden:
 
    torch.jit.supported_ops <jit_builtin_functions>
+   langauge <jit_language_reference>
 
 .. contents:: :local:
 
@@ -1651,6 +1652,7 @@ Unsupported ``torch.nn`` Modules  ::
 
 
 See :ref:`builtin-functions` for a full reference of supported functions
+See :ref:`language-reference` for a full reference of supported functions
 
 
 Frequently Asked Questions
