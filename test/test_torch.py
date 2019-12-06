@@ -5260,6 +5260,24 @@ tensor([[[1., 1., 1.,  ..., 1., 1., 1.],
                 self.assertTrue(r2.dtype == t_dtype)
                 self.assertTrue(r2.requires_grad)
 
+    @unittest.skipIf(not TEST_NUMPY, "Numpy not found")
+    def test_parse_numpy_int(self):
+        self.assertRaisesRegex(RuntimeError, "Overflow",
+                               lambda: torch.mean(torch.randn(1, 1), np.uint64(-1)))
+        # https://github.com/pytorch/pytorch/issues/29252
+        for nptype in [np.int16, np.int8, np.uint8, np.int32, np.int64]:
+            np_arr = np.array([5], dtype=nptype)
+            np_val = np_arr[0]
+            self.assertEqual(torch.Storage(np_val).size(), 5)
+
+            tensor = torch.tensor([2], dtype=torch.int)
+            tensor[0] = np_val
+            self.assertEqual(tensor[0], np_val)
+
+            t = torch.from_numpy(np_arr)
+            self.assertEqual((t + np_val).dtype, t.dtype)
+            self.assertEqual((np_val + t).dtype, t.dtype)
+
     def test_error_msg_type_translation(self):
         with self.assertRaisesRegex(
                 RuntimeError,
