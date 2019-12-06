@@ -10,7 +10,7 @@ namespace distributed {
 namespace rpc {
 ///////////////////////////  PyRRef  //////////////////////////////////
 
-PyRRef::PyRRef(std::shared_ptr<RRef> rref) : rref_(std::move(rref)) {
+PyRRef::PyRRef(std::shared_ptr<RRefBase> rref) : rref_(std::move(rref)) {
   TORCH_CHECK(rref_, "PyRRef must not wrap nullptr");
 }
 
