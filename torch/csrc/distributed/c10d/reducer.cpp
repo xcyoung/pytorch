@@ -100,6 +100,29 @@ Reducer::Reducer(
     }
   }
 
+  // Initialize locally used parameter maps
+  {
+    const auto replica_count = replicas_.size();
+    const auto variable_count = replicas_[0].size();
+    local_used_maps_.resize(replica_count);
+    local_used_maps_dev_.resize(replica_count);
+
+    for (size_t i = 0; i < replica_count; i++) {
+      at::TensorOptions options, options_host;
+      options = options.dtype(at::kInt);
+      options_host =
+          replicas_[i][0].is_cuda() ? options.pinned_memory(true) : options;
+      local_used_maps_[i] =
+          at::zeros({static_cast<long>(variable_count)}, options_host);
+      // This tensor needs to be on the same device as replica because backend
+      // such as NCCL may not support CPU tensors, and hence it might not work
+      // if we always put it on CPU.
+      options = options.device(replicas_[i][0].device());
+      local_used_maps_dev_[i] =
+          at::empty({static_cast<long>(variable_count)}, options);
+    }
+  }
+
   // Initialize variable bucketing.
   // This can be reinitialized later after capturing runtime information.
   initialize_buckets(std::move(bucket_indices));
@@ -159,29 +182,6 @@ Reducer::Reducer(
         backward_stats_.begin(),
         backward_stats_.end(),
         [=](std::vector<int64_t>& v) { v.resize(variable_count); });
-  }
-
-  // Initialize locally used parameter maps
-  {
-    const auto replica_count = replicas_.size();
-    const auto variable_count = replicas_[0].size();
-    local_used_maps_.resize(replica_count);
-    local_used_maps_dev_.resize(replica_count);
-
-    for (size_t i = 0; i < replica_count; i++) {
-      at::TensorOptions options, options_host;
-      options = options.dtype(at::kInt);
-      options_host =
-          replicas_[i][0].is_cuda() ? options.pinned_memory(true) : options;
-      local_used_maps_[i] =
-          at::zeros({static_cast<long>(variable_count)}, options_host);
-      // This tensor needs to be on the same device as replica because backend
-      // such as NCCL may not support CPU tensors, and hence it might not work
-      // if we always put it on CPU.
-      options = options.device(replicas_[i][0].device());
-      local_used_maps_dev_[i] =
-          at::empty({static_cast<long>(variable_count)}, options);
-    }
   }
 }
 
