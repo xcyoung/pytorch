@@ -140,10 +140,13 @@ class TORCH_API RpcAgent {
   static std::shared_ptr<RpcAgent> getDefaultRpcAgent();
 
   // Retrive metrics as KV map
-  virtual std::unordered_map<std::string, std::string> getMetrics() = 0;
+  virtual std::unordered_map<std::string, std::string> getMetrics();
 
   // Retrive debug info in addition to metrics as KV map
-  virtual std::unordered_map<std::string, std::string> getDebugInfo() = 0;
+  virtual std::unordered_map<std::string, std::string> getDebugInfo();
+
+  // Add GIL wait time data point to metrics
+  virtual void addGilWaitTime(const std::chrono::microseconds gilWaitTime);
 
  protected:
   const WorkerInfo workerInfo_;
