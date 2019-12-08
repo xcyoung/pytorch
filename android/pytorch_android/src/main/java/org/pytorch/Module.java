@@ -48,6 +48,10 @@ public class Module {
     return mNativePeer.runMethod(methodName, inputs);
   }
 
+  public void setNumThreads(int numThreads) {
+    mNativePeer.setNumThreads(numThreads);
+  }
+
   /**
    * Explicitly destroys the native torch::jit::script::Module. Calling this method is not required,
    * as the native object will be destroyed when this object is garbage-collected. However, the

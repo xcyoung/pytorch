@@ -38,6 +38,23 @@ android {
             buildConfigField ("String", "MODULE_ASSET_NAME", buildConfigProps('MODULE_ASSET_NAME_MOBNET2_QUANT'))
             addManifestPlaceholders([APP_NAME: "PyMobNet2Quant"])
             buildConfigField ("String", "LOGCAT_TAG", "\"pytorch-mobnet2q\"")
+            buildConfigField ("int", "NUM_THREADS", "-1")
+        }
+        mobNet2Quant1 {
+            dimension "model"
+            applicationIdSuffix ".mobNet2Quant1"
+            buildConfigField ("String", "MODULE_ASSET_NAME", buildConfigProps('MODULE_ASSET_NAME_MOBNET2_QUANT'))
+            addManifestPlaceholders([APP_NAME: "PyMobNet2Quant1"])
+            buildConfigField ("String", "LOGCAT_TAG", "\"pytorch-mobnet2q1\"")
+            buildConfigField ("int", "NUM_THREADS", "1")
+        }
+        mobNet2Quant2 {
+            dimension "model"
+            applicationIdSuffix ".mobNet2Quant2"
+            buildConfigField ("String", "MODULE_ASSET_NAME", buildConfigProps('MODULE_ASSET_NAME_MOBNET2_QUANT'))
+            addManifestPlaceholders([APP_NAME: "PyMobNet2Quant2"])
+            buildConfigField ("String", "LOGCAT_TAG", "\"pytorch-mobnet2q2\"")
+            buildConfigField ("int", "NUM_THREADS", "2")
         }
         resnet18 {
             dimension "model"
