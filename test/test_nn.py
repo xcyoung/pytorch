@@ -38,22 +38,22 @@ from torch.autograd import gradcheck
 from torch.autograd.gradcheck import gradgradcheck
 from torch.nn import Parameter
 from torch.nn.parallel._functions import Broadcast
-from common_utils import freeze_rng_state, run_tests, TestCase, skipIfNoLapack, skipIfRocm, \
+from torch.testlib.common_utils import freeze_rng_state, run_tests, TestCase, skipIfNoLapack, skipIfRocm, \
     TEST_NUMPY, TEST_SCIPY, download_file, PY3, to_gpu, \
     get_function_arglist, load_tests, repeat_test_for_types, ALL_TENSORTYPES, \
     TemporaryFileName
-from common_cuda import TEST_CUDA, TEST_MULTIGPU, TEST_CUDNN, TEST_CUDNN_VERSION
-from common_nn import NNTestCase, ModuleTest, CriterionTest, TestBase, \
+from torch.testlib.common_cuda import TEST_CUDA, TEST_MULTIGPU, TEST_CUDNN, TEST_CUDNN_VERSION
+from torch.testlib.common_nn import NNTestCase, ModuleTest, CriterionTest, TestBase, \
     module_tests, criterion_tests, new_criterion_tests, loss_reference_fns, \
     ctcloss_reference, new_module_tests
-from common_device_type import instantiate_device_type_tests, dtypes, \
+from torch.testlib.common_device_type import instantiate_device_type_tests, dtypes, \
     dtypesIfCUDA, skipCUDAIfNoCudnn, skipCUDAIfCudnnVersionLessThan, onlyCUDA, \
     skipCUDAIfRocm, skipCUDAIf
 
 from torch.nn import MultiheadAttention
 
 from hypothesis import given
-import hypothesis_utils as hu
+import torch.testlib.hypothesis_utils as hu
 
 # load_tests from common_utils is used to automatically filter tests for
 # sharding on sandcastle. This line silences flake warnings
