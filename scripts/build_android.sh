@@ -25,7 +25,7 @@ set -e
 if [ -z "$ANDROID_ABI" ]; then
   ANDROID_ABI="armeabi-v7a with NEON"
 fi
-ANDROID_NATIVE_API_LEVEL="21"
+ANDROID_NATIVE_API_LEVEL="19"
 echo "Build with ANDROID_ABI[$ANDROID_ABI], ANDROID_NATIVE_API_LEVEL[$ANDROID_NATIVE_API_LEVEL]"
 
 CAFFE2_ROOT="$( cd "$(dirname "$0")"/.. ; pwd -P)"

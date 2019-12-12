@@ -1,6 +1,26 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
 
+uploadArchives {
+    configuration = configurations.archives
+    repositories {
+        mavenDeployer {
+            repository(url: MAVEN_URL) {
+                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+            }
+            pom.project {
+                version '0.0.2'
+                //#名字
+                artifactId 'shelf-pytorch-android'
+                groupId MAVEN_GROUP_ID
+                packaging MAVEN_TYPE
+                description ''
+            }
+        }
+    }
+}
+
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
@@ -13,7 +33,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {
-            abiFilters ABI_FILTERS.split(",")
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
     }
     buildTypes {
@@ -58,9 +78,10 @@ android {
 }
 
 dependencies {
-    api project(':fbjni')
+//    api project(':fbjni')
+    api 'com.imagedt.shelf:shelf-fbjni:0.0.1'
 
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    compileOnly 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.facebook.soloader:nativeloader:0.8.0'
 
     testImplementation 'junit:junit:' + rootProject.junitVersion
@@ -73,11 +94,11 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:' + rootProject.runnerVersion
 }
 
-apply from: rootProject.file('gradle/release.gradle')
+//apply from: rootProject.file('gradle/release.gradle')
 
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-artifacts.add('archives', sourcesJar)
+//task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier = 'sources'
+//}
+//
+//artifacts.add('archives', sourcesJar)

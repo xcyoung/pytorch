@@ -1,6 +1,25 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
 
+uploadArchives {
+    configuration = configurations.archives
+    repositories {
+        mavenDeployer {
+            repository(url: MAVEN_URL) {
+                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+            }
+            pom.project {
+                version '0.0.1'
+                //#名字
+                artifactId 'shelf-fbjni'
+                groupId MAVEN_GROUP_ID
+                packaging MAVEN_TYPE
+                description ''
+            }
+        }
+    }
+}
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
@@ -41,11 +60,11 @@ dependencies {
     implementation 'com.facebook.soloader:nativeloader:0.8.0'
 }
 
-apply from: rootProject.file('gradle/release.gradle')
+//apply from: rootProject.file('gradle/release.gradle')
 
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-artifacts.add('archives', sourcesJar)
+//task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier = 'sources'
+//}
+//
+//artifacts.add('archives', sourcesJar)
